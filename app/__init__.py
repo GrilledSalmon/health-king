@@ -11,7 +11,7 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-
+# devsds
 app.register_blueprint(login_view.bp)
 app.register_blueprint(login_view.bp)
 app.register_blueprint(recruit_card_view.bp)
