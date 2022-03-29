@@ -5,8 +5,10 @@
 }
 
 .login-form {
+    z-index: 9999;
     display: none;
     position: absolute;
+    background-color: white;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
