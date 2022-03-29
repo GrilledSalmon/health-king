@@ -17,5 +17,6 @@ const close_btn = document.querySelector('.close-btn');close_btn.addEventListene
 
 
 // 로그인 버튼
-const login_btn = document.querySelector('.login-btn');
+const login_btn = document.querySelector('#login-btn');
 login_btn.addEventListener('click', showModal);
+
