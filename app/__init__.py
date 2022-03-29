@@ -1,6 +1,6 @@
 from app.views.recruit_card_view import recruit_card
 from flask import Flask, render_template
-from views import login_view, login_view, recruit_card_view
+from .views import login_view, signup_view, recruit_card_view
 
 
 
@@ -13,5 +13,5 @@ def home():
 
 # devsds
 app.register_blueprint(login_view.bp)
-app.register_blueprint(login_view.bp)
+app.register_blueprint(signup_view.bp)
 app.register_blueprint(recruit_card_view.bp)
