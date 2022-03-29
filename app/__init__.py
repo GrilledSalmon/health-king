@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_cors import CORS
 from pymongo import MongoClient
 from app.secrets import HOST, PORT, USERNAME, PASSWORD, SECRET_KEY
 
@@ -16,6 +17,7 @@ card_collection = db.card
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.secret_key = SECRET_KEY
 
     @app.route('/', methods=['GET'])
