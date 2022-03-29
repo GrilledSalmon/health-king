@@ -34,7 +34,7 @@ def create_app():
     @app.route('/main', methods=['GET'])
     def listing():
 
-        result = list(db.health.find({}))
+        result = list(card_collection.find({}))
 
         for i in range(len(result)):
             temp_id = str(result[i]['_id']) 
@@ -61,7 +61,7 @@ def create_app():
             'content' : receive_content
             }
 
-        db.health.insert_one(doc)
+        card_collection.insert_one(doc)
 
         print("doc:",doc)
 
