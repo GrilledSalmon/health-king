@@ -3,3 +3,31 @@
     margin: 0;
     padding: 0;
 }
+
+.login-form {
+    display: none;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10%;
+    border: 2px solid red;
+}
+
+.form-row {
+    display: inline;
+}
+
+.login-form input {
+    border: 1px black solid;
+}
+
+.close-btn{
+    position: absolute;
+    top:3%;
+    right:3%;
+    float:right;
+}
