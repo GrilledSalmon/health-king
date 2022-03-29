@@ -1,4 +1,3 @@
-from app.views.recruit_card_view import recruit_card
 from flask import Flask, render_template
 from .views import login_view, signup_view, recruit_card_view
 
