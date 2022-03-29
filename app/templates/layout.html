@@ -5,20 +5,137 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../static/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>헬스킹</title>
+    <style>
+        .wrap {
+            width: 800px;
+            margin: auto;
+        }
+        .button_gap {
+            margin: 0 0.5em 0.5em 0em;
+            float:right;
+        }
+        .herobody {
+            padding: 1rem;
+        }
+        .text-input {
+            width: 100px;
+            margin: 0.5rem 0.5rem 0 0;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            console.log("asdfefffff")
+            showCard();
+        });
+        
+        function post_recruit_box() {
+            if ($("#recuit-box-sub").css("display") == "block") {
+                $("#recuit-box-sub").hide();
+                $("#recruit_button").text("등록");
+
+            } else {
+                $("#recuit-box-sub").show();
+                $("#recruit_button").text("취소");
+            }
+        }
+
+        function showCard() {
+            $.ajax({
+                type: "GET",
+                url: "/main",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let activities = response['activities']
+                        // console.log(activities)
+                        for (let i = 0; i < activities.length; i++) {
+                            makeCard(activities[i]["_id"],
+                                activities[i]["acname"],
+                                activities[i]["time"],
+                                activities[i]["place"],
+                                activities[i]["content"]
+                            )
+                        }
+                    }
+                }
+            })
+        }
+
+        function makeCard(ID, acname, time, place, content) {
+
+            let temp_html = `<div id="${ID}" class="card">
+                <p>활동 종목:${acname}</p>
+                <p>활동 시각:${time}</p>
+                <p>활동 장소:${place}</p>
+                <p>활동 내용:${content}</p>
+                <button id="join_button" class="button button_gap" onclick="">참가</button>
+                </div>`
+
+                $("#card-list").append(temp_html);
+        }
+
+        function postCard() {
+            console.log("왜안돼")
+            let post_acname = $("#ac_name").val()
+            let post_time = $("#ac_time").val()
+            let post_place = $("#ac_place").val()
+            let post_content = $("#ac_content").val()
+            $.ajax({
+                type: "POST",
+                url: "/main/registration",
+                data: { give_acname: post_acname, 
+                    give_time: post_time, 
+                    give_place: post_place, 
+                    give_content: post_content },
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("포스팅 성공!")
+                        // 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
+        }
+    </script>
+
 </head>
-<body>
+<body class="wrap">
     <header>
-        <h1>헬스킹</h1>
-        <ul>
-            <li>모집</li>
-            <li>어쩌고</li>
-            {% if session %}
-                <li>마이페이지</li>
-            {% else %}
-                <li class="login-btn">로그인</li>
-            {% endif %}
-        </ul>
+        <section class="hero is-small is-info">
+            <div class="herobody">
+              <p class="title">
+                헬스킹
+              </p>
+            </div>
+            <div class="nav-bar" id="nav-bar">
+                {% if session %}
+                    <li>마이페이지</li>
+                {% else %}
+                    <button class="button button_gap is-warning">로그인</button>
+                {% endif %}
+                <button id="recruit_button" class="button button_gap is-success" onclick="post_recruit_box()">모집</button>
+            </div>
+          </section>
+
+          <div id='recuit-box-sub' style="display: none;">
+            <input id='ac_name' class="input text-input is-small" type="text" placeholder="종목">
+            <input id='ac_time' class="input text-input is-small" type="text" placeholder="시간">
+            <input id='ac_place' class="input text-input is-small" type="text" placeholder="장소">
+            <input id='ac_content'  class="input text-input is-small" style="width:300px;" type="text" placeholder="내용 요약">
+            <button id="registration" class="button button_gap" style="height: 2em; margin-top: 0.3em;" onclick="postCard()">등록</button>
+          </div>
+          <hr style="margin: 0.5rem 0 0.7rem 0;">
     </header>
     <main role="main" class="main">
         {% block main %}
