@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/index.css">
+    <title>헬스킹</title>
+</head>
+<body>
+    <header>
+        <h1>헬스킹</h1>
+        <ul>
+            <li>모집</li>
+            <li>어쩌고</li>
+            {% if session %}
+                <li>마이페이지</li>
+            {% else %}
+                <li>로그인</li>
+            {% endif %}
+        </ul>
+    </header>
+    <main role="main" class="main">
+        {% block main %}
+        {% endblock %}
+    </main>
+</body>
+<script src="../static/index.js"></script>
+</html>
