@@ -27,21 +27,32 @@
     background-color: white;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: 500px;
+    /* height: 150px; */
     left: 0;
     right: 0;
     text-align: center;
-    padding: 10%;
-    border: 2px solid red;
+    padding: 5%;
+    border: 2px solid black;
+    border-radius: 10px;
+
 }
 
 .form-row {
-    display: inline;
+    display: block;
+    white-space:nowrap;
 }
 
 .login-form input {
     border: 1px black solid;
+    width: 100px;
+    display: inline;
 }
+
+.login-form label {
+    display: inline;
+}
+
 
 .close-btn{
     position: absolute;
@@ -54,4 +65,8 @@
     width: 800px;
     margin: auto;
     margin-top: 20px;
+}
+
+#login-submit {
+    width:100px;
 }
