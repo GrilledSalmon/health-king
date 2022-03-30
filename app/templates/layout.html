@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kor">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../static/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -13,30 +13,22 @@
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
     <title>헬스킹</title>
-    <style>
-        .wrap {
-            width: 800px;
-            margin: auto;
-        }
-        .button_gap {
-            margin: 0 0.5em 0.5em 0em;
-            float:right;
-        }
-        .herobody {
-            padding: 1rem;
-        }
-        .text-input {
-            width: 80px;
-            margin: 0.5rem 0.5rem 0 0;
-        }
-    </style>
+
+    <link rel="stylesheet" type="text/css" href="../static/index.css"/>
+
     <script>
         $(document).ready(function () {
             showCard_login();
             showCard();
         });
-        
+
         function post_recruit_box() {
             if ($("#recuit-box-sub").css("display") == "block") {
                 $("#recuit-box-sub").hide();
@@ -47,7 +39,7 @@
                 $("#recruit_button").text("취소");
             }
         }
-        
+
         function groupJoin(ID) {
             console.log("그룹 참가 내용 뜸")
             $.ajax({
@@ -119,7 +111,7 @@
                         let activities = response['activities']
                         console.log(activities)
                         for (let i = 0; i < activities.length; i++) {
-                            
+
                             if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
                                 makeCard(activities[i]["_id"],
                                     activities[i]["acname"],
@@ -130,7 +122,7 @@
                                     activities[i]["numbers"],
                                     activities[i]["participant"],
                                     activities[i]["IDs"]
-                            )
+                                )
                             }
                         }
                     }
@@ -150,11 +142,11 @@
                 <button id="join_button" class="button button_gap" onclick="groupJoin('${ID}')">참가</button>
                 </div>`
 
-                $("#card-list").append(temp_html);
+            $("#card-list").append(temp_html);
         }
 
         function postCard() {
-            
+
             let post_acname = $("#ac_name").val()
             let post_acmaxnum = $("#ac_maxnum").val()
             let post_time = $("#ac_time").val()
@@ -163,11 +155,13 @@
             $.ajax({
                 type: "POST",
                 url: "/main/registration",
-                data: { give_acname: post_acname,
-                    give_acmaxnum: post_acmaxnum, 
-                    give_time: post_time, 
-                    give_place: post_place, 
-                    give_content: post_content },
+                data: {
+                    give_acname: post_acname,
+                    give_acmaxnum: post_acmaxnum,
+                    give_time: post_time,
+                    give_place: post_place,
+                    give_content: post_content
+                },
                 success: function (response) { // 성공하면
                     if (response["result"] == "success") {
                         alert("모집 등록 성공!")
@@ -182,38 +176,37 @@
     </script>
 
 </head>
-<body class="wrap">
+
+<body class="real-wrap">
     <header>
         <section class="hero is-small is-info">
             <div class="herobody">
-              <p class="title">
-                헬스킹
-              </p>
+                <p class="title">
+                    헬스킹
+                </p>
             </div>
-            
+
             <div class="nav-bar" id="nav-bar">
-                {% if session %}
-                    <li><a href="/logout">로그아웃</a></li>
-                {% else %}
-                    <button id="login-btn" class="button button_gap is-warning">로그인</button>
-                {% endif %}
+                <button id="login-btn" class="button button_gap is-warning">로그인</button>
                 <button id="recruit_button" class="button button_gap is-success" onclick="post_recruit_box()">모집</button>
             </div>
-          </section>
+        </section>
 
-          <div id='recuit-box-sub' style="display: none;">
+        <div id='recuit-box-sub' style="display: none;">
             <input id='ac_name' class="input text-input is-small" type="text" placeholder="종목">
             <input id='ac_maxnum' class="input text-input is-small" type="text" placeholder="모집인원">
             <input id='ac_time' class="input text-input is-small" type="text" placeholder="시간">
             <input id='ac_place' class="input text-input is-small" type="text" placeholder="장소">
-            <input id='ac_content'  class="input text-input is-small" style="width:330px;" type="text" placeholder="내용 요약">
-            <button id="registration" class="button button_gap" style="height: 2em; margin-top: 0.3em;" onclick="postCard()">등록</button>
-          </div>
-          <hr style="margin: 0.5rem 0 0.7rem 0;">
-          
+            <input id='ac_content' class="input text-input is-small" style="width:330px;" type="text"
+                placeholder="내용 요약">
+            <button id="registration" class="button button_gap" style="height: 2em; margin-top: 0.3em;"
+                onclick="postCard()">등록</button>
+        </div>
+        <hr style="margin: 0.5rem 0 0.7rem 0;">
+
     </header>
     <div class="login-form">
-        <form action="/login" method="post">
+        <form id="login-form">
           <div class="form-row">
               <p id="close-btn" class='close-btn'>X</p>
           </div>
@@ -223,10 +216,10 @@
             </div>
             <div class="form-row">
                 <label for="user-pw">비밀번호</label>
-                <input type="text" name="user-pw" >
+                <input type="text" name="user-pw">
             </div>
             <div class="form-row">
-                <input type="submit" name="제출버튼" value="로그인">
+                <input id="login-submit" type="button" name="제출버튼" value="로그인">
                 <a href="/user">회원가입하기</a>
             </div>
         </form>
@@ -237,4 +230,5 @@
     </main>
 </body>
 <script src="../static/index.js"></script>
+
 </html>
