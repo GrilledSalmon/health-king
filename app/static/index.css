@@ -54,7 +54,8 @@
     right:3%;
     float:right;
 }
-.wrap {
+
+.real-wrap {
     width: 800px;
     margin: auto;
     margin-top: 20px;
