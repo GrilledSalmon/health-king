@@ -45,13 +45,26 @@ const login_form_post = () => {
             })
         }
     )
-    .then((res)=>res.json())
-    .then((result)=>{
-        window.localStorage.setItem('access_token', result['access_token']);
-        window.location.href='http://127.0.0.1:5000/';
-        location.reload();
-    });
+    .then((res)=>{
+        if (res.status == 404){
+            alert('아이디가 틀렸습니다!')
+        } else if (res.status == 403) {
+            alert('비밀번호가 틀렸습니다!')
+        } else {
+            const result = res.json()
+            window.localStorage.setItem('access_token', result['access_token']);
+            window.location.href='http://127.0.0.1:5000/';
+            location.reload();
+        }
+    })
 }
+    // .then((res)=>res.json())
+    // .then((result)=>{
+    //     window.localStorage.setItem('access_token', result['access_token']);
+    //     window.location.href='http://127.0.0.1:5000/';
+    //     location.reload();
+//     });
+// }
 
 // 버튼 누르면 값들 가져와서 post 요청
 submit_btn.addEventListener('click', login_form_post)
