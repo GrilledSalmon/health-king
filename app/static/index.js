@@ -58,13 +58,56 @@ const login_form_post = () => {
         }
     })
 }
-    // .then((res)=>res.json())
-    // .then((result)=>{
-    //     window.localStorage.setItem('access_token', result['access_token']);
-    //     window.location.href='http://127.0.0.1:5000/';
-    //     location.reload();
-//     });
-// }
-
-// 버튼 누르면 값들 가져와서 post 요청
 submit_btn.addEventListener('click', login_form_post)
+
+let register_show = false;
+const recruit_btn = document.querySelector('#recruit_button');
+const register_form = document.querySelector('#recuit-box-sub');
+
+recruit_btn.addEventListener('click', ()=>{
+    if (!token) {
+        alert("로그인이 필요합니다!");
+        location.reload();
+    } else if (token && !register_show) {
+        recruit_btn.textContent='취소';
+        register_form.style.display='block';
+        register_show=true;
+        
+    } else if (token && register_show) {
+        recruit_btn.textContent='모집';
+        register_form.style.display='none';
+        register_show=false;
+    }
+
+})
+register_btn = document.querySelector('#registration');
+register_btn.addEventListener('click', ()=> {
+    let post_acname = $("#ac_name").val();
+    let post_acmaxnum = $("#ac_maxnum").val();
+    let post_time = $("#ac_time").val();
+    let post_place = $("#ac_place").val();
+    let post_content = $("#ac_content").val();
+    $.ajax({
+                    type: "POST",
+                    url: "/main/registration",
+                    headers: {'authorization': token},
+                    data: {
+                        give_acname: post_acname,
+                        give_acmaxnum: post_acmaxnum,
+                        give_time: post_time,
+                        give_place: post_place,
+                        give_content: post_content
+                    },
+                    success: function (response) { // 성공하면
+                        if (response["result"] == "success") {
+                            alert("모집 등록 성공!")
+                            // 성공 시 페이지 새로고침하기
+                            window.location.reload();
+                        } else {
+                            alert("서버 오류!")
+                        }
+                    }
+                })
+
+})
+
