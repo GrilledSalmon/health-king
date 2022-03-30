@@ -1,15 +1,17 @@
-from flask import Blueprint, redirect, render_template, request,abort,session, url_for, make_response, jsonify
+from flask import Blueprint, render_template, request,abort, make_response, jsonify
 from app.secrets import SECRET_KEY
 from app import user_collection
 from bcrypt import checkpw
+from bson.objectid import ObjectId
 import datetime
 import jwt
 
-def encode_token(user_id):
+def encode_token(object_id):
         payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, minutes=30),
                 'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                'sub': 'health_king_token',
+                'object_id':object_id
             }
         return jwt.encode(
             payload,
@@ -24,7 +26,6 @@ bp = Blueprint('login',__name__)
 def login():
     if request.method != "POST":
         abort(404)
-        return "포스트요청"
 
     # 원래 코드, form요청임
     # user_id = request.form.get('user-id')
@@ -56,11 +57,11 @@ def login():
     # session['name'] = user['name']
     # print("로그인 성공")
     # return render_template('index.html')
-
+    # print(user.keys())
     responseObject = {
                         'status': 'success',
                         'message': 'Successfully logged in.',
-                        'access_token': encode_token(user_id),
+                        'access_token': encode_token(str(user['_id'])),
                     }
 
 
