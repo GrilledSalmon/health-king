@@ -86,7 +86,10 @@ recruit_btn.addEventListener('click', ()=>{
 })
 const register_btn = document.getElementById('registration');
 const register_form_inputs = document.querySelectorAll('#recuit-box-sub > input');
-
+const isInDesiredForm = (str) => {
+    var n = Math.floor(Number(str));
+    return n !== Infinity && String(n) === str && n >= 0;
+}
 
 register_btn.addEventListener('click', ()=> {
     let post_acname = document.getElementById("ac_name");
@@ -100,6 +103,10 @@ register_btn.addEventListener('click', ()=> {
         post_acname.focus();
     } else if (!post_acmaxnum.value) {
         alert("모집인원을 입력해주세요");
+        post_acmaxnum.focus();
+    } else if(!isInDesiredForm(post_acmaxnum.value)) {
+        alert('모집인원은 정수로 입력해주세요');
+        post_acmaxnum.value = '';
         post_acmaxnum.focus();
     } else if (!post_time.value) {
         alert("시간을 입력해주세요");
