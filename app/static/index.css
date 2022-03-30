@@ -2,4 +2,56 @@
     border: 0;
     margin: 0;
     padding: 0;
+    font-family: 'Noto Sans KR', sans-serif; /* 구글 폰트 */
+}
+
+.button_gap {
+    margin: 0 0.5em 0.5em 0em;
+    float: right;
+}
+
+.herobody {
+    padding: 1rem;
+}
+
+.text-input {
+    width: 80px;
+    margin: 0.5rem 0.5rem 0 0;
+}
+
+
+.login-form {
+    z-index: 9999;
+    display: none;
+    position: absolute;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10%;
+    border: 2px solid red;
+}
+
+.form-row {
+    display: inline;
+}
+
+.login-form input {
+    border: 1px black solid;
+}
+
+.close-btn{
+    position: absolute;
+    top:3%;
+    right:3%;
+    float:right;
+}
+
+.real-wrap {
+    width: 800px;
+    margin: auto;
+    margin-top: 20px;
 }

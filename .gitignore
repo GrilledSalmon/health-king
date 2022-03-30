@@ -2,3 +2,6 @@ venv
 __pycache__
 *.pyc
 secrets.py
+test.py
+test.ipynb
+test.html
