@@ -35,8 +35,8 @@
         function groupJoin(ID) {
             $.ajax({
                 type: "POST",
-                url: "/main/join",
-                headers: { 'Authorization': token },
+                url: "http://3.87.32.129:5000/main/join",
+                headers: {'authorization': token},
                 data: { give_ID: ID },
                 success: function (response) { // 성공하면
                     if (response["result"] == "success") {
@@ -53,8 +53,8 @@
         function showCard_login() {
             $.ajax({
                 type: "GET",
-                url: "/main/login",
-                headers: { 'Authorization': token },
+                url: "http://3.87.32.129:5000/main/login",
+                headers: {'authorization': token},
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -99,7 +99,7 @@
         function showCard() {
             $.ajax({
                 type: "GET",
-                url: "/main",
+                url: "http://3.87.32.129:5000/main",
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
