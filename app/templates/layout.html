@@ -144,6 +144,7 @@
             </div>
 
             <div class="nav-bar" id="nav-bar">
+<<<<<<< HEAD
                 {% if session %}
                 <li><a href="/logout">로그아웃</a></li>
                 {% else %}
@@ -151,6 +152,10 @@
                 {% endif %}
                 <button id="recruit_button" class="button button_gap is-success"
                     onclick="post_recruit_box()">모집</button>
+=======
+                <button id="login-btn" class="button button_gap is-warning">로그인</button>
+                <button id="recruit_button" class="button button_gap is-success" onclick="post_recruit_box()">모집</button>
+>>>>>>> 884a56a234a77ff54598f2ceaa5597bcd2c3bd25
             </div>
         </section>
 
@@ -168,10 +173,10 @@
 
     </header>
     <div class="login-form">
-        <form action="/login" method="post">
-            <div class="form-row">
-                <p id="close-btn" class='close-btn'>X</p>
-            </div>
+        <form id="login-form">
+          <div class="form-row">
+              <p id="close-btn" class='close-btn'>X</p>
+          </div>
             <div class="form-row">
                 <label for="user-id">아이디</label>
                 <input type="text" name="user-id">
@@ -181,7 +186,7 @@
                 <input type="text" name="user-pw">
             </div>
             <div class="form-row">
-                <input type="submit" name="제출버튼" value="로그인">
+                <input id="login-submit" type="button" name="제출버튼" value="로그인">
                 <a href="/user">회원가입하기</a>
             </div>
         </form>
