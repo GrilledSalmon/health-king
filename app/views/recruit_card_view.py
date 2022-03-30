@@ -1,10 +1,40 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request,Response
 from bson.objectid import ObjectId
-from app import card_collection
-from app import user_collection
+from app import card_collection,user_collection
+from app.secrets import SECRET_KEY
+from functools import wraps
 import jwt
 
+def decode_token(token):
+    return jwt.decode(token, SECRET_KEY, algorithms='HS256')
+
+def login_required(f):      									
+    @wraps(f)                   								
+    def decorated_function(*args, **kwargs):					
+        access_token = request.headers.get('Authorization')
+        if access_token is not None:  							
+            try:
+                payload = decode_token(access_token)
+            except jwt.InvalidTokenError:
+                payload = None     							
+
+            if payload is None: return Response(status=401)
+        else:
+            return Response(status = 401)  						
+
+        return f(*args, **kwargs)
+    return decorated_function
+
 bp = Blueprint('recruit_card',__name__)
+
+
+@bp.route('/test', methods=['GET'])
+@login_required
+def test_token():
+    access_token = request.headers.get('Authorization')
+    payload = decode_token(access_token)
+    print(payload)
+    return 'ok'
 
 @bp.route('/recruit_card')
 def recruit_card():
@@ -85,6 +115,9 @@ def join():
 
 @bp.route('/main/registration', methods=['POST'])
 def posting():
+    
+    token = request.headers.get('access_token')
+    token = decode_token(token)
     userID = "TEMPID"
     userName = "TEMPNAME"
     receive_acname = request.form['give_acname']
