@@ -1,0 +1,38 @@
+
+* {
+    font-family: 'Noto Sans KR', sans-serif; /* 구글 폰트 */
+}
+
+.wrap {
+    width: 600px;
+    margin: auto;
+    /* border: black solid; */
+}
+
+
+.wrap>h1 {
+    width: 125px;
+    margin: auto;
+    margin-bottom: 20px;
+    /* border: blue solid; */
+}
+
+
+.form-control {
+    width: 80%;
+    /* border: red solid; */
+}
+
+.form {
+    margin: auto;
+    width: 600px;
+    /* border: yellow solid; */
+}
+
+#inputId {
+    margin-bottom: 10px;
+}
+
+#sign-up-butt {
+    float: right;
+}

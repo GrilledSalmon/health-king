@@ -2,7 +2,30 @@
     border: 0;
     margin: 0;
     padding: 0;
+    font-family: 'Noto Sans KR', sans-serif; /* 구글 폰트 */
 }
+
+
+
+/* .hero {
+    border: red solid;
+    border-radius: 10px;
+} */
+
+.button_gap {
+    margin: 0 0.5em 0.5em 0em;
+    float: right;
+}
+
+.herobody {
+    padding: 1rem;
+}
+
+.text-input {
+    width: 80px;
+    margin: 0.5rem 0.5rem 0 0;
+}
+
 
 .login-form {
     z-index: 9999;
@@ -32,4 +55,9 @@
     top:3%;
     right:3%;
     float:right;
+}
+.wrap {
+    width: 800px;
+    margin: auto;
+    margin-top: 20px;
 }
