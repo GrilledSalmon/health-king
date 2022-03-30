@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request
 from bson.objectid import ObjectId
 from app import card_collection
+from app import user_collection
 
 bp = Blueprint('recruit_card',__name__)
 
@@ -21,11 +22,43 @@ def listing():
     return jsonify({'result':'success', 'activities': result})
 
 
+@bp.route("/main/login", methods=['GET'])
+def listing_login():
+
+    userID = 'TEMPNAME2'
+
+    user_ac = user_collection.find_one({'id':userID})
+
+    result = []
+
+    for activity in user_ac['activity']:
+        print(activity)
+        bson_id = ObjectId(activity)
+        temp_dic = card_collection.find_one({'_id':bson_id}, {'_id': 0})
+        result.append(temp_dic)
+    
+    print('-'*20)
+    print(result)
+    print('-'*20)
+
+    return jsonify({'result':'success', 'activities': result})
+
+
 @bp.route('/main/join', methods=['POST'])
 def join():
-    userID = "TEMPID2"
-    userName = "TEMPNAME2"
+    userID = 'TEMPNAME2'
+    userName = 'TEMPID2'
     receive_oID = request.form['give_ID']
+    print("total:", list(user_collection.find()))
+
+    user_target = user_collection.find_one({'id':userID})
+
+    print("usertaget:", user_target)
+    user_target['activity'].append(receive_oID)
+
+    target_user = user_target['activity']
+
+    user_collection.update_one({'id':userID},{'$set':{'activity':target_user}})
 
     bson_id = ObjectId(receive_oID)
 

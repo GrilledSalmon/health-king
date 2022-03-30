@@ -33,6 +33,7 @@
     </style>
     <script>
         $(document).ready(function () {
+            showCard_login();
             showCard();
         });
         
@@ -65,9 +66,50 @@
             })
         }
 
+        function showCard_login() {
+            $.ajax({
+                type: "GET",
+                url: "/main/login",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        console.log('아무말')
+                        let activities = response['activities']
+                        console.log(activities)
+                        for (let i = 0; i < activities.length; i++) {
+                            
+                            if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
+                                makeCard_login(
+                                    activities[i]["acname"],
+                                    activities[i]["acmaxnum"],
+                                    activities[i]["time"],
+                                    activities[i]["place"],
+                                    activities[i]["content"],
+                                    activities[i]["numbers"],
+                                    activities[i]["participant"]
+                            )
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        function makeCard_login(acname, acmaxnum, time, place, content, numbers, participant) {
+
+            let temp_html = `<div class="card" style="margin-bottom: 1em;">
+                <p>종목:${acname}</p>
+                <p>모집인원:${numbers}/${acmaxnum}</p>
+                <p>시각:${time}</p>
+                <p>장소:${place}</p>
+                <p>내용:${content}</p>
+                <p>참여자:${participant}</p>
+                </div>`
+
+            $("#card-list_login").append(temp_html);
+}
 
         function showCard() {
-            console.log('testestest')
             $.ajax({
                 type: "GET",
                 url: "/main",
