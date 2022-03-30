@@ -32,7 +32,6 @@ if (!token){
 const submit_btn = document.querySelector('#login-submit');
 
 const login_form_post = () => {
-    console.log(modal.querySelectorAll('input')[0].value,modal.querySelectorAll('input')[1].value);
     fetch(
         'http://127.0.0.1:5000/login',{
             method:'post',
@@ -48,7 +47,6 @@ const login_form_post = () => {
     )
     .then((res)=>res.json())
     .then((result)=>{
-        console.log(result['message']);
         window.localStorage.setItem('access_token', result['access_token']);
         window.location.href='http://127.0.0.1:5000/';
         location.reload();
