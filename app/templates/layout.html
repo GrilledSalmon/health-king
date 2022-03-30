@@ -1,29 +1,235 @@
 <!DOCTYPE html>
 <html lang="kor">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../static/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
     <title>헬스킹</title>
+
+    <link rel="stylesheet" type="text/css" href="../static/index.css"/>
+
+    <script>
+        $(document).ready(function () {
+            showCard_login();
+            showCard();
+        });
+
+        function post_recruit_box() {
+            if ($("#recuit-box-sub").css("display") == "block") {
+                $("#recuit-box-sub").hide();
+                $("#recruit_button").text("등록");
+
+            } else {
+                $("#recuit-box-sub").show();
+                $("#recruit_button").text("취소");
+            }
+        }
+
+        function groupJoin(ID) {
+            console.log("그룹 참가 내용 뜸")
+            $.ajax({
+                type: "POST",
+                url: "/main/join",
+                data: { give_ID: ID },
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("참여 완료!")
+                        // 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else if (response['result'] == 'fail') {
+                        alert("이미 참여한 활동입니다.")
+                    }
+                }
+            })
+        }
+
+        function showCard_login() {
+            $.ajax({
+                type: "GET",
+                url: "/main/login",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let activities = response['activities']
+                        console.log(activities)
+                        for (let i = 0; i < activities.length; i++) {
+                            
+                            if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
+                                makeCard_login(
+                                    activities[i]["acname"],
+                                    activities[i]["acmaxnum"],
+                                    activities[i]["time"],
+                                    activities[i]["place"],
+                                    activities[i]["content"],
+                                    activities[i]["numbers"],
+                                    activities[i]["participant"]
+                            )
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        function makeCard_login(acname, acmaxnum, time, place, content, numbers, participant) {
+
+            let temp_html = `<div class="card" style="margin-bottom: 1em;">
+                <p>종목:${acname}</p>
+                <p>모집인원:${numbers}/${acmaxnum}</p>
+                <p>시각:${time}</p>
+                <p>장소:${place}</p>
+                <p>내용:${content}</p>
+                <p>참여자:${participant}</p>
+                </div>`
+
+            $("#card-list_login").append(temp_html);
+}
+
+        function showCard() {
+            $.ajax({
+                type: "GET",
+                url: "/main",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let activities = response['activities']
+                        console.log(activities)
+                        for (let i = 0; i < activities.length; i++) {
+
+                            if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
+                                makeCard(activities[i]["_id"],
+                                    activities[i]["acname"],
+                                    activities[i]["acmaxnum"],
+                                    activities[i]["time"],
+                                    activities[i]["place"],
+                                    activities[i]["content"],
+                                    activities[i]["numbers"],
+                                    activities[i]["participant"],
+                                    activities[i]["IDs"]
+                                )
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        function makeCard(ID, acname, acmaxnum, time, place, content, numbers, participant, IDs) {
+
+            let temp_html = `<div id="${ID}" class="card" style="margin-bottom: 1em;">
+                <p>종목:${acname}</p>
+                <p>모집인원:${numbers}/${acmaxnum}</p>
+                <p>시각:${time}</p>
+                <p>장소:${place}</p>
+                <p>내용:${content}</p>
+                <p>참여자:${participant}</p>
+                <button id="join_button" class="button button_gap" onclick="groupJoin('${ID}')">참가</button>
+                </div>`
+
+            $("#card-list").append(temp_html);
+        }
+
+        function postCard() {
+
+            let post_acname = $("#ac_name").val()
+            let post_acmaxnum = $("#ac_maxnum").val()
+            let post_time = $("#ac_time").val()
+            let post_place = $("#ac_place").val()
+            let post_content = $("#ac_content").val()
+            const token =  localStorage.getItem('access_token');
+            $.ajax({
+                type: "POST",
+                url: "/main/registration",
+                headers: {'authorization': token},
+                data: {
+                    give_acname: post_acname,
+                    give_acmaxnum: post_acmaxnum,
+                    give_time: post_time,
+                    give_place: post_place,
+                    give_content: post_content
+                },
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("모집 등록 성공!")
+                        // 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
+        }
+    </script>
+
 </head>
-<body>
+
+<body class="real-wrap">
     <header>
-        <h1>헬스킹</h1>
-        <ul>
-            <li>모집</li>
-            <li>어쩌고</li>
-            {% if session %}
-                <li>마이페이지</li>
-            {% else %}
-                <li>로그인</li>
-            {% endif %}
-        </ul>
+        <section class="hero is-small is-info">
+            <div class="herobody">
+                <p class="title">
+                    헬스킹
+                </p>
+            </div>
+
+            <div class="nav-bar" id="nav-bar">
+                <button id="login-btn" class="button button_gap is-warning">로그인</button>
+                <button id="recruit_button" class="button button_gap is-success" onclick="post_recruit_box()">모집</button>
+            </div>
+        </section>
+
+        <div id='recuit-box-sub' style="display: none;">
+            <input id='ac_name' class="input text-input is-small" type="text" placeholder="종목">
+            <input id='ac_maxnum' class="input text-input is-small" type="text" placeholder="모집인원">
+            <input id='ac_time' class="input text-input is-small" type="text" placeholder="시간">
+            <input id='ac_place' class="input text-input is-small" type="text" placeholder="장소">
+            <input id='ac_content' class="input text-input is-small" style="width:330px;" type="text"
+                placeholder="내용 요약">
+            <button id="registration" class="button button_gap" style="height: 2em; margin-top: 0.3em;"
+                onclick="postCard()">등록</button>
+        </div>
+        <hr style="margin: 0.5rem 0 0.7rem 0;">
+
     </header>
+    <div class="login-form">
+        <form id="login-form">
+          <div class="form-row">
+              <p id="close-btn" class='close-btn'>X</p>
+          </div>
+            <div class="form-row">
+                <label for="user-id">아이디</label>
+                <input type="text" name="user-id">
+            </div>
+            <div class="form-row">
+                <label for="user-pw">비밀번호</label>
+                <input type="text" name="user-pw">
+            </div>
+            <div class="form-row">
+                <input id="login-submit" type="button" name="제출버튼" value="로그인">
+                <a href="/user">회원가입하기</a>
+            </div>
+        </form>
+    </div>
     <main role="main" class="main">
         {% block main %}
         {% endblock %}
     </main>
 </body>
 <script src="../static/index.js"></script>
+
 </html>
