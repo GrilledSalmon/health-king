@@ -65,7 +65,6 @@
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
-                        console.log('아무말')
                         let activities = response['activities']
                         console.log(activities)
                         for (let i = 0; i < activities.length; i++) {
@@ -152,9 +151,11 @@
             let post_time = $("#ac_time").val()
             let post_place = $("#ac_place").val()
             let post_content = $("#ac_content").val()
+            const token =  localStorage.getItem('access_token');
             $.ajax({
                 type: "POST",
                 url: "/main/registration",
+                headers: {'authorization': token},
                 data: {
                     give_acname: post_acname,
                     give_acmaxnum: post_acmaxnum,

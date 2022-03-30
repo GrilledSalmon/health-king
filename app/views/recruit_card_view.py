@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, jsonify, request
 from bson.objectid import ObjectId
 from app import card_collection
 from app import user_collection
+import jwt
 
 bp = Blueprint('recruit_card',__name__)
 
@@ -91,6 +92,9 @@ def posting():
     receive_time = request.form['give_time']
     receive_place = request.form['give_place']
     receive_content = request.form['give_content']
+
+    header = request.headers.get('authorization')
+    
     
     participant = [userName]
     IDs = [userID]
