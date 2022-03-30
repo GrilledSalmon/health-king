@@ -91,8 +91,10 @@
 
             if (!check) {
                 alert('아이디 중복 여부를 확인해주세요.')
+            } else if (password.length < 4) {
+                alert('비밀번호의 길이는 4자 이상이어야 합니다.')
             } else if (password != password_check) {
-                alert('패스워드가 동일하지 않습니다.')
+                alert('비밀번호가 동일하지 않습니다.')
             } else {
                 $.ajax({
                     type: 'POST',

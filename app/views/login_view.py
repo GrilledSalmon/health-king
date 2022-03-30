@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, render_template, request,abort,session, url_for
 from app import user_collection
+from bcrypt import checkpw
 bp = Blueprint('login',__name__)
 
 @bp.route('/login', methods=["POST"])
@@ -19,7 +20,7 @@ def login():
 
     # pw check
     # db의 password와 일치하지 않으면 403 Forbidden
-    if user['password'] != user_pw:
+    if not checkpw(password=user_pw.encode(), hashed_password=user['password']):
         return "비밀번호가 틀렸습니다", 403
 
     # 로그인 성공시 세션에 id와 이름을 저장
