@@ -78,36 +78,78 @@ recruit_btn.addEventListener('click', ()=>{
         register_form.style.display='none';
         register_show=false;
     }
-
+    
 })
-register_btn = document.querySelector('#registration');
+const register_btn = document.getElementById('registration');
+const register_form_inputs = document.querySelectorAll('#recuit-box-sub > input');
+
+
 register_btn.addEventListener('click', ()=> {
-    let post_acname = $("#ac_name").val();
-    let post_acmaxnum = $("#ac_maxnum").val();
-    let post_time = $("#ac_time").val();
-    let post_place = $("#ac_place").val();
-    let post_content = $("#ac_content").val();
-    $.ajax({
-                    type: "POST",
-                    url: "/main/registration",
-                    headers: {'authorization': token},
-                    data: {
-                        give_acname: post_acname,
-                        give_acmaxnum: post_acmaxnum,
-                        give_time: post_time,
-                        give_place: post_place,
-                        give_content: post_content
-                    },
-                    success: function (response) { // 성공하면
-                        if (response["result"] == "success") {
-                            alert("모집 등록 성공!")
-                            // 성공 시 페이지 새로고침하기
-                            window.location.reload();
-                        } else {
-                            alert("서버 오류!")
-                        }
-                    }
-                })
+    let post_acname = document.getElementById("ac_name");
+    let post_acmaxnum = document.getElementById("ac_maxnum");
+    let post_time = document.getElementById("ac_time");
+    let post_place = document.getElementById("ac_place");
+    let post_content = document.getElementById("ac_content");
+    console.log('클릭됨');
+    if (!post_acname.value) {
+        alert("종목을 입력해주세요");
+        post_acname.focus();
+    } else if (!post_acmaxnum.value) {
+        alert("모집인원을 입력해주세요");
+        post_acmaxnum.focus();
+    } else if (!post_time.value) {
+        alert("시간을 입력해주세요");
+        post_time.focus();
+    } else if (!post_place.value) {
+        alert("장소를 입력해주세요");
+        post_place.focus();
+    } else if (!post_content.value) {
+        alert("내용을 입력해주세요");
+        post_content.focus();
+    } else {
+        post_card(
+            post_acname.value,
+            post_acmaxnum.value,
+            post_time.value,
+            post_place.value,
+            post_content.value
+            );
+    }
+
+    
 
 })
 
+const post_card = (
+    post_acname,
+    post_acmaxnum,
+    post_time,
+    post_place,
+    post_content) => {
+    $.ajax({
+        type: "POST",
+        url: "http://127.0.0.1:5000/main/registration",
+        headers: {'authorization': token},
+        data: {
+            give_acname: post_acname,
+            give_acmaxnum: post_acmaxnum,
+            give_time: post_time,
+            give_place: post_place,
+            give_content: post_content
+        },
+        success: function (response) { // 성공하면
+            if (response["result"] == "success") {
+                alert("모집 등록 성공!")
+                // 성공 시 페이지 새로고침하기
+                window.location.reload();
+            } else {
+                alert("서버 오류!")
+            }
+        },
+        error: function(response) {
+            alert("로그인을 다시 해주세요!")
+            window.location.href='http://127.0.0.1:5000/';
+            window.location.reload();
+        }
+    })
+}
