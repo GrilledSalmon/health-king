@@ -22,7 +22,7 @@
 
 .login-form {
     z-index: 9999;
-    display: block;
+    display: none;
     position: absolute;
     background-color: white;
     margin-left: auto;
