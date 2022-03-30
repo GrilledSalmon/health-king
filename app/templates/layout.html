@@ -48,7 +48,7 @@
             $.ajax({
                 type: "POST",
                 url: "/main/join",
-                headers: {'authorization': token},
+                headers: {'Authorization': token},
                 data: { give_ID: ID },
                 success: function (response) { // 성공하면
                     if (response["result"] == "success") {
@@ -66,7 +66,7 @@
             $.ajax({
                 type: "GET",
                 url: "/main/login",
-                headers: {'authorization': token},
+                headers: {'Authorization': token},
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -163,7 +163,7 @@
             $.ajax({
                 type: "POST",
                 url: "/main/registration",
-                headers: {'authorization': token},
+                headers: {'Authorization': token},
                 data: {
                     give_acname: post_acname,
                     give_acmaxnum: post_acmaxnum,

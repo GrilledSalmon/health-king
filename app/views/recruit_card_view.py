@@ -57,7 +57,7 @@ def listing():
 @login_required
 def listing_login():
 
-    token = request.headers.get('authorization')
+    token = request.headers.get('Authorization')
     token = decode_token(token)
 
     user_objectid = ObjectId(token['object_id'])
@@ -87,7 +87,7 @@ def listing_login():
 @login_required
 def join():
 
-    token = request.headers.get('authorization')
+    token = request.headers.get('Authorization')
     token = decode_token(token)
 
     user_objectid = ObjectId(token['object_id'])
@@ -133,7 +133,7 @@ def join():
 @login_required
 def posting():
     
-    token = request.headers.get('authorization')
+    token = request.headers.get('Authorization')
     token = decode_token(token)
     print("*"*20)
     print(token)
@@ -167,6 +167,22 @@ def posting():
         'IDs' : IDs
         }
 
-    card_collection.insert_one(doc)
+    test =  card_collection.insert_one(doc)
+
+    print(dir(test))
+
+    print(test.inserted_id)
+
+    print(type(str(test.inserted_id)))
+
+    user_dict2 = user_collection.find_one({'_id':user_objectid})
+
+    print(user_dict2)
+
+    user_dict2['activity'].append(str(test.inserted_id))
+
+    print(user_dict2)
+
+    user_collection.update_one({'_id':user_objectid},{'$set':{'activity':user_dict2['activity']}})
 
     return jsonify({'result': 'success'})
