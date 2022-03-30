@@ -14,7 +14,7 @@ def user():
         # 비밀번호 암호화(BCrypt 사용)
         hashed_password = hashpw(password=password.encode(), salt=gensalt())
         
-        doc = {'id' : id, 'password' : hashed_password, 'name' : name}
+        doc = {'id' : id, 'password' : hashed_password, 'name' : name, 'activity' : []}
         user_collection.insert_one(doc)
         
         return jsonify({'result' : 'success'})
