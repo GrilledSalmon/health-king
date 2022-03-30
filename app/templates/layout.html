@@ -45,6 +45,7 @@
             $.ajax({
                 type: "POST",
                 url: "/main/join",
+                headers: {'authorization': token},
                 data: { give_ID: ID },
                 success: function (response) { // 성공하면
                     if (response["result"] == "success") {
@@ -62,12 +63,15 @@
             $.ajax({
                 type: "GET",
                 url: "/main/login",
+                headers: {'authorization': token},
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
-                        console.log('아무말')
                         let activities = response['activities']
-                        console.log(activities)
+                        let logintitle = '<h3 class="title is-3">나의활동내역</h3>'
+
+                        $("#login-title").append(logintitle);
+                        
                         for (let i = 0; i < activities.length; i++) {
                             
                             if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
@@ -152,9 +156,11 @@
             let post_time = $("#ac_time").val()
             let post_place = $("#ac_place").val()
             let post_content = $("#ac_content").val()
+            const token =  localStorage.getItem('access_token');
             $.ajax({
                 type: "POST",
                 url: "/main/registration",
+                headers: {'authorization': token},
                 data: {
                     give_acname: post_acname,
                     give_acmaxnum: post_acmaxnum,

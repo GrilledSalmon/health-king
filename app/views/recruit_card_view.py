@@ -44,7 +44,7 @@ def recruit_card():
 def listing():
 
     result = list(card_collection.find({}))
-    print(result)
+    
     for i in range(len(result)):
         temp_id = str(result[i]['_id']) 
         del result[i]['_id'] 
@@ -54,37 +54,53 @@ def listing():
 
 
 @bp.route("/main/login", methods=['GET'])
+@login_required
 def listing_login():
 
-    userID = 'TEMPNAME2'
+    token = request.headers.get('authorization')
+    token = decode_token(token)
+
+    user_objectid = ObjectId(token['object_id'])
+    user_dict = user_collection.find_one({'_id':user_objectid})
+
+    # print(user_dict)
+
+    userID = user_dict['id']
+
+    # print('userid:', userID)
 
     user_ac = user_collection.find_one({'id':userID})
 
-    result = []
+    # print('user_ac:', user_ac)
 
-    for activity in user_ac['activity']:
-        print(activity)
-        bson_id = ObjectId(activity)
-        temp_dic = card_collection.find_one({'_id':bson_id}, {'_id': 0})
-        result.append(temp_dic)
-    
-    print('-'*20)
-    print(result)
-    print('-'*20)
+    result = []
+    if user_ac:
+        for activity in user_ac['activity']:
+            bson_id = ObjectId(activity)
+            temp_dic = card_collection.find_one({'_id':bson_id}, {'_id': 0})
+            result.append(temp_dic)
 
     return jsonify({'result':'success', 'activities': result})
 
 
 @bp.route('/main/join', methods=['POST'])
+@login_required
 def join():
-    userID = 'TEMPNAME2'
-    userName = 'TEMPID2'
+
+    token = request.headers.get('authorization')
+    token = decode_token(token)
+
+    user_objectid = ObjectId(token['object_id'])
+    user_dict = user_collection.find_one({'_id':user_objectid})
+
+    userID = user_dict['id']
+    userName = user_dict['name']
     receive_oID = request.form['give_ID']
-    print("total:", list(user_collection.find()))
+    
 
     user_target = user_collection.find_one({'id':userID})
 
-    print("usertaget:", user_target)
+    
     user_target['activity'].append(receive_oID)
 
     target_user = user_target['activity']
@@ -109,29 +125,37 @@ def join():
     card_collection.update_one({'_id':bson_id},{'$set':{'IDs':target_id}})
     card_collection.update_one({'_id':bson_id},{'$set':{'numbers':len(target_name)}})
 
-    print(card_collection.find_one({'_id':bson_id}))
+    
     return jsonify({'result': 'success'})
 
 
 @bp.route('/main/registration', methods=['POST'])
+@login_required
 def posting():
     
-    token = request.headers.get('access_token')
+    token = request.headers.get('authorization')
     token = decode_token(token)
-    userID = "TEMPID"
-    userName = "TEMPNAME"
+    print("*"*20)
+    print(token)
+    print("*"*20)
+    user_objectid = ObjectId(token['object_id'])
+    user_dict = user_collection.find_one({'_id':user_objectid})
+    
+
+    userID = user_dict['id']
+    userName = user_dict['name']
+
     receive_acname = request.form['give_acname']
     receive_acmaxnum = request.form['give_acmaxnum']
     receive_time = request.form['give_time']
     receive_place = request.form['give_place']
     receive_content = request.form['give_content']
+
     
     participant = [userName]
     IDs = [userID]
     numbers = len(participant)
-    print("-" * 20)
-    print("dbitems:", receive_acname, receive_acmaxnum, receive_time, receive_place, receive_content, numbers, participant, IDs)
-    print("-" * 20)
+    
     doc = {
         'acname' : receive_acname,
         'acmaxnum' : receive_acmaxnum,
@@ -144,7 +168,5 @@ def posting():
         }
 
     card_collection.insert_one(doc)
-
-    print("doc:",doc)
 
     return jsonify({'result': 'success'})
