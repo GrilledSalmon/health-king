@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
 from app.secrets import HOST, PORT, USERNAME, PASSWORD, SECRET_KEY
+from bson.objectid import ObjectId
 
 client = MongoClient(
     HOST,
@@ -28,44 +29,6 @@ def create_app():
     app.register_blueprint(login_view.bp)
     app.register_blueprint(signup_view.bp)
     app.register_blueprint(recruit_card_view.bp)
-
-
-
-    @app.route('/main', methods=['GET'])
-    def listing():
-
-        result = list(card_collection.find({}))
-
-        for i in range(len(result)):
-            temp_id = str(result[i]['_id']) 
-            del result[i]['_id'] 
-            result[i]['_id'] = temp_id 
-
-        return jsonify({'result':'success', 'activities': result})
-
-
-
-    @app.route('/main/registration', methods=['POST'])
-    def posting():
-        receive_acname = request.form['give_acname']
-        receive_time = request.form['give_time']
-        receive_place = request.form['give_place']
-        receive_content = request.form['give_content']
-
-        print("sadfefe",receive_acname, receive_time, receive_place, receive_content)
-
-        doc = {
-            'acname' : receive_acname,
-            'time' : receive_time,
-            'place' : receive_place,
-            'content' : receive_content
-            }
-
-        card_collection.insert_one(doc)
-
-        print("doc:",doc)
-
-        return jsonify({'result': 'success'})
 
     return app
 
