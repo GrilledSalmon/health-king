@@ -21,11 +21,11 @@
 
     <title>헬스킹</title>
 
-    <link rel="stylesheet" type="text/css" href="../static/index.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/index.css" />
 
     <script>
         $(document).ready(function () {
-            const token =  localStorage.getItem('access_token')
+            const token = localStorage.getItem('access_token');
             if (token) {
                 showCard_login();
             }
@@ -33,50 +33,55 @@
         });
 
         function groupJoin(ID) {
-            console.log("그룹 참가 내용 뜸")
-            $.ajax({
-                type: "POST",
-                url: "/main/join",
-                headers: {'authorization': token},
-                data: { give_ID: ID },
-                success: function (response) { // 성공하면
-                    if (response["result"] == "success") {
-                        alert("참여 완료!")
-                        // 성공 시 페이지 새로고침하기
-                        window.location.reload();
-                    } else if (response['result'] == 'fail') {
-                        alert("이미 참여한 활동입니다.")
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                alert("로그인을 해주세요!");
+                window.location.href='http://yoonwoo.shop:5000/';
+                window.location.reload();
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "http://yoonwoo.shop:5000/main/join",
+                    headers: {'Authorization': token},
+                    data: { give_ID: ID },
+                    success: function (response) { // 성공하면
+                        if (response["result"] == "success") {
+                            alert("참여 완료!")
+                            // 성공 시 페이지 새로고침하기
+                            window.location.reload();
+                        } else if (response['result'] == 'fail') {
+                            alert("이미 참여한 활동입니다.")
+                        }
                     }
-                }
-            })
-        }
+                })
+            }
+            }
 
         function showCard_login() {
             $.ajax({
                 type: "GET",
-                url: "/main/login",
-                headers: {'authorization': token},
+                url: "http://yoonwoo.shop:5000/main/login",
+                headers: {'Authorization': token},
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
                         let activities = response['activities']
-                        let logintitle = '<h3 class="title is-3">나의활동내역</h3>'
+                        let logintitle = '<h3 class="title is-3" style="margin-bottom:0.5em">나의 활동</h3>'
 
                         $("#login-title").append(logintitle);
-                        
+
                         for (let i = 0; i < activities.length; i++) {
-                            
-                            if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
-                                makeCard_login(
-                                    activities[i]["acname"],
-                                    activities[i]["acmaxnum"],
-                                    activities[i]["time"],
-                                    activities[i]["place"],
-                                    activities[i]["content"],
-                                    activities[i]["numbers"],
-                                    activities[i]["participant"]
+
+                            makeCard_login(
+                                activities[i]["acname"],
+                                activities[i]["acmaxnum"],
+                                activities[i]["time"],
+                                activities[i]["place"],
+                                activities[i]["content"],
+                                activities[i]["numbers"],
+                                activities[i]["participant"]
                             )
-                            }
+
                         }
                     }
                 }
@@ -86,21 +91,22 @@
         function makeCard_login(acname, acmaxnum, time, place, content, numbers, participant) {
 
             let temp_html = `<div class="card" style="margin-bottom: 1em;">
+                <h3>제목:${content}</h3>
                 <p>종목:${acname}</p>
-                <p>모집인원:${numbers}/${acmaxnum}</p>
                 <p>시각:${time}</p>
                 <p>장소:${place}</p>
-                <p>내용:${content}</p>
+                <p>모집인원:${numbers}/${acmaxnum}</p>
                 <p>참여자:${participant}</p>
+                <p>모집상태: ${numbers === acmaxnum ? "모집완료" : "모집 중"}</p>
                 </div>`
 
             $("#card-list_login").append(temp_html);
-}
+        }
 
         function showCard() {
             $.ajax({
                 type: "GET",
-                url: "/main",
+                url: "http://yoonwoo.shop:5000/main",
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -129,11 +135,11 @@
         function makeCard(ID, acname, acmaxnum, time, place, content, numbers, participant, IDs) {
 
             let temp_html = `<div id="${ID}" class="card" style="margin-bottom: 1em;">
+                <h3>제목:${content}</h3>
                 <p>종목:${acname}</p>
-                <p>모집인원:${numbers}/${acmaxnum}</p>
                 <p>시각:${time}</p>
                 <p>장소:${place}</p>
-                <p>내용:${content}</p>
+                <p>모집인원:${numbers}/${acmaxnum}</p>
                 <p>참여자:${participant}</p>
                 <button id="join_button" class="button button_gap" onclick="groupJoin('${ID}')">참가</button>
                 </div>`
