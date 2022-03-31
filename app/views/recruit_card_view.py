@@ -63,6 +63,8 @@ def listing_login():
     user_objectid = ObjectId(token['object_id'])
     user_dict = user_collection.find_one({'_id':user_objectid})
 
+    if not user_dict:
+        return "wrong token", 404
     # print(user_dict)
 
     userID = user_dict['id']
