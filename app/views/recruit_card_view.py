@@ -40,7 +40,7 @@ def test_token():
 def recruit_card():
     return render_template('index.html')
 
-@bp.route('/main', methods=['GET'])
+@bp.route('/', methods=['GET'])
 def listing():
 
     result = list(card_collection.find({}))
@@ -48,9 +48,9 @@ def listing():
     for i in range(len(result)):
         temp_id = str(result[i]['_id']) 
         del result[i]['_id'] 
-        result[i]['_id'] = temp_id 
-
-    return jsonify({'result':'success', 'activities': result})
+        result[i]['_id'] = temp_id
+    
+    return render_template('index.html', cards=result)
 
 
 @bp.route("/main/login", methods=['GET'])
@@ -59,7 +59,7 @@ def listing_login():
 
     token = request.headers.get('Authorization')
     token = decode_token(token)
-
+    print(token['object_id'])
     user_objectid = ObjectId(token['object_id'])
     user_dict = user_collection.find_one({'_id':user_objectid})
 
@@ -76,6 +76,7 @@ def listing_login():
     result = []
     if user_ac:
         for activity in user_ac['activity']:
+            print(activity)
             bson_id = ObjectId(activity)
             temp_dic = card_collection.find_one({'_id':bson_id}, {'_id': 0})
             result.append(temp_dic)

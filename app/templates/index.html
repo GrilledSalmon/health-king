@@ -8,4 +8,16 @@
 
 <h3 class="title is-3">모집 중인 활동</h3>
 <div id="card-list"></div>
+{% for card in cards %}
+    <div id="{{card._id}}" class="card" style="margin-bottom: 1em;">
+        <h3>제목:&nbsp;{{card.content}}</h3>
+        <p>종목:&nbsp;{{card.acname}}</p>
+        <p>시각:&nbsp;{{card.time}}</p>
+        <p>장소:&nbsp;{{card.place}}</p>
+        <p>모집인원:&nbsp;{{card.numbers}}/{{card.acmaxnum}}</p>
+        <p>참여자:&nbsp;{{", ".join(card.participant)}}</p>
+        <button id="join_button" class="button button_gap" 
+        onclick="groupJoin('{{card._id}}')">참가</button>
+    </div>
+{% endfor %}
 {% endblock %}
