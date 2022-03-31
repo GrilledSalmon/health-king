@@ -29,7 +29,6 @@
             if (token) {
                 showCard_login();
             }
-            showCard();
         });
 
         function groupJoin(ID) {
@@ -56,6 +55,7 @@
             }
 
         function showCard_login() {
+            const token = localStorage.getItem('access_token');
             $.ajax({
                 type: "GET",
                 url: "http://yoonwoo.shop:5000/main/login",
@@ -82,6 +82,9 @@
 
                         }
                     }
+                },
+                error: function(err) {
+                    console.log(err);
                 }
             })
         }
@@ -101,34 +104,7 @@
             $("#card-list_login").append(temp_html);
         }
 
-        function showCard() {
-            $.ajax({
-                type: "GET",
-                url: "http://yoonwoo.shop:5000/main",
-                data: {},
-                success: function (response) {
-                    if (response["result"] == "success") {
-                        let activities = response['activities']
-                        console.log(activities)
-                        for (let i = 0; i < activities.length; i++) {
 
-                            if (activities[i]["numbers"] < activities[i]["acmaxnum"]) {
-                                makeCard(activities[i]["_id"],
-                                    activities[i]["acname"],
-                                    activities[i]["acmaxnum"],
-                                    activities[i]["time"],
-                                    activities[i]["place"],
-                                    activities[i]["content"],
-                                    activities[i]["numbers"],
-                                    activities[i]["participant"],
-                                    activities[i]["IDs"]
-                                )
-                            }
-                        }
-                    }
-                }
-            })
-        }
 
         function makeCard(ID, acname, acmaxnum, time, place, content, numbers, participant, IDs) {
 
