@@ -43,7 +43,7 @@ function postdata() {
                     alert(`가입이 완료되었습니다!`);
 
                     // 가입 완료 시 홈으로 보내줌
-                    window.location.href = 'http://127.0.0.1:5000/'
+                    window.location.href = 'http://yoonwoo.shop:5000/'
                 }
             }
         });

@@ -33,7 +33,7 @@ const submit_btn = document.querySelector('#login-submit');
 
 const login_form_post = () => {
     fetch(
-        'http://3.87.32.129:5000/login',{
+        'http://yoonwoo.shop:5000/login',{
             method:'post',
             headers: {
                 'Accept':'application/json',
@@ -56,7 +56,7 @@ const login_form_post = () => {
     })
     .then((result)=>{
         window.localStorage.setItem('access_token', result['access_token']);
-        window.location.href='http://3.87.32.129:5000/';
+        window.location.href='http://yoonwoo.shop:5000/';
         location.reload();
     })
 }
@@ -139,7 +139,7 @@ const post_card = (
     post_content) => {
     $.ajax({
         type: "POST",
-        url: "http://3.87.32.129:5000/main/registration",
+        url: "http://yoonwoo.shop:5000/main/registration",
         headers: {'authorization': token},
         data: {
             give_acname: post_acname,
@@ -159,7 +159,7 @@ const post_card = (
         },
         error: function(response) {
             alert("로그인을 다시 해주세요!")
-            window.location.href='http://3.87.32.129:5000/';
+            window.location.href='http://yoonwoo.shop:5000/';
             window.location.reload();
         }
     })

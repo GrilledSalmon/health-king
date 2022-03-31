@@ -25,7 +25,7 @@
 
     <script>
         $(document).ready(function () {
-            const token = localStorage.getItem('access_token')
+            const token = localStorage.getItem('access_token');
             if (token) {
                 showCard_login();
             }
@@ -33,28 +33,35 @@
         });
 
         function groupJoin(ID) {
-            $.ajax({
-                type: "POST",
-                url: "http://3.87.32.129:5000/main/join",
-                headers: {'authorization': token},
-                data: { give_ID: ID },
-                success: function (response) { // 성공하면
-                    if (response["result"] == "success") {
-                        alert("참여 완료!")
-                        // 성공 시 페이지 새로고침하기
-                        window.location.reload();
-                    } else if (response['result'] == 'fail') {
-                        alert("이미 참여한 활동입니다.")
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                alert("로그인을 해주세요!");
+                window.location.href='http://yoonwoo.shop:5000/';
+                window.location.reload();
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "http://yoonwoo.shop:5000/main/join",
+                    headers: {'Authorization': token},
+                    data: { give_ID: ID },
+                    success: function (response) { // 성공하면
+                        if (response["result"] == "success") {
+                            alert("참여 완료!")
+                            // 성공 시 페이지 새로고침하기
+                            window.location.reload();
+                        } else if (response['result'] == 'fail') {
+                            alert("이미 참여한 활동입니다.")
+                        }
                     }
-                }
-            })
-        }
+                })
+            }
+            }
 
         function showCard_login() {
             $.ajax({
                 type: "GET",
-                url: "http://3.87.32.129:5000/main/login",
-                headers: {'authorization': token},
+                url: "http://yoonwoo.shop:5000/main/login",
+                headers: {'Authorization': token},
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
@@ -99,7 +106,7 @@
         function showCard() {
             $.ajax({
                 type: "GET",
-                url: "http://3.87.32.129:5000/main",
+                url: "http://yoonwoo.shop:5000/main",
                 data: {},
                 success: function (response) {
                     if (response["result"] == "success") {
